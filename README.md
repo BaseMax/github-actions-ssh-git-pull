@@ -48,7 +48,7 @@ Go to your repo → **Settings** → **Secrets and variables** → **Actions** �
 | `SSH_USERNAME`   | SSH user with access to the project directory   |
 | `SSH_KEY`        | Private SSH key (no passphrase)                 |
 | `SSH_PASSWORD`   | SSH password with access to the project directory   |
-| `PROJECT_PATH`    | Absolute path of the Git project on the server   |
+| `PROJECT_DIRECTORY`    | Absolute path of the Git project on the server   |
 | `RESTART_COMMAND` | Command to restart the service or PM2 app        |
 
 ---
@@ -79,7 +79,7 @@ jobs:
       - name: Connect and Deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ${{ secrets.PROJECT_PATH }}
+            cd ${{ secrets.PROJECT_DIRECTORY }}
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
