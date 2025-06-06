@@ -53,10 +53,10 @@ Go to your repo → **Settings** → **Secrets and variables** → **Actions** �
 
 ---
 
-## 📦 GitHub Actions Workflow - SSH by Key (`.github/workflows/git-ssh-key.yml`)
+## 📦 GitHub Actions Workflow - SSH by Key (`.github/workflows/deploy-git-ssh-key.yml`)
 
 ```yaml
-name: Deploy via SSH
+name: Deploy via SSH by Key
 
 on:
   push:
@@ -90,7 +90,7 @@ jobs:
 ## 📦 GitHub Actions Workflow - SSH by Password (`.github/workflows/git-ssh-password.yml`)
 
 ```yaml
-name: Deploy via SSH
+name: Deploy via SSH by Password
 
 on:
   push:
@@ -102,18 +102,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-
-      - name: Connect and Deploy
+      - name: Deploy to Server via SSH
+        env:
+          SSHPASS: ${{ secrets.SSH_PASSWORD }}
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd ${{ secrets.PROJECT_PATH }}
+          sshpass -e ssh -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
+            cd ${{ secrets.PROJECT_DIRECTORY }}
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
@@ -126,7 +123,7 @@ jobs:
 - Fork this repo (or copy deploy.yml to your own)
 - Add the required GitHub secrets
 - Ensure SSH access from GitHub to your remote server
-- Push to main branch – the deployment runs automatically!
+- Push to main branch - the deployment runs automatically!
 
 ## 🛠️ Customization
 
