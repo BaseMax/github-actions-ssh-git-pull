@@ -1,4 +1,4 @@
-name: Deploy via SSH
+name: Deploy via SSH by Key
 
 on:
   push:
@@ -22,6 +22,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd ${{ secrets.PROJECT_PATH }}
-            git pull origin main
-            pm2 restart 3
+            git fetch origin main
+            git reset --hard origin/main
+            git clean -fd
+            ${{ secrets.RESTART_COMMAND }}
           EOF
