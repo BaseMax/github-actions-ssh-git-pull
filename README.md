@@ -147,7 +147,7 @@ Go to Actions → Deploy via SSH → Run workflow
 
 ## 🧾 License
 
-MIT License — feel free to use and adapt.
+MIT License - feel free to use and adapt.
 
 ## 🙋‍♂️ Author
 
