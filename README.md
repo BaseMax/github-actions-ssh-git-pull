@@ -83,7 +83,9 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
-            ${{ secrets.RESTART_COMMAND }}
+            if [ -n "${{ secrets.RESTART_COMMAND }}" ]; then
+              eval "${{ secrets.RESTART_COMMAND }}"
+            fi
           EOF
 ```
 
@@ -114,7 +116,9 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             git clean -fd
-            ${{ secrets.RESTART_COMMAND }}
+            if [ -n "${{ secrets.RESTART_COMMAND }}" ]; then
+              eval "${{ secrets.RESTART_COMMAND }}"
+            fi
           EOF
 ```
 
